@@ -1,3 +1,4 @@
+// jest.config.js - Configuração Completa do Jest
 module.exports = {
   testEnvironment: 'jsdom',
   coverageDirectory: 'coverage',
@@ -6,7 +7,8 @@ module.exports = {
     '!**/node_modules/**',
     '!**/coverage/**',
     '!**/tests/**/*.e2e.test.js',
-    '!jest.config.js'
+    '!jest.config.js',
+    '!playwright.config.js'
   ],
   coverageThreshold: {
     global: {
@@ -24,5 +26,6 @@ module.exports = {
     '/node_modules/',
     '.*\\.e2e\\.test\\.js$'
   ],
-  roots: ['<rootDir>/tests']
+  roots: ['<rootDir>/tests'],
+  verbose: true
 };
