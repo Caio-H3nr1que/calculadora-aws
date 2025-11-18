@@ -1,5 +1,5 @@
 // calculator.test.js - Testes Unitários
-// Para executar: npm test
+// Salve este arquivo em: tests/calculator.test.js
 
 describe('Calculator - Testes Unitários', () => {
     let calculator;
@@ -108,21 +108,21 @@ describe('Calculator - Testes Unitários', () => {
 
     describe('Operações Encadeadas', () => {
         test('deve realizar operações encadeadas corretamente', () => {
-            calculator.currentValue = '5';
+            calculator.appendNumber('5');
             calculator.setOperator('+');
-            calculator.currentValue = '3';
+            calculator.appendNumber('3');
             calculator.calculate();
             expect(calculator.currentValue).toBe('8');
 
             calculator.setOperator('*');
-            calculator.currentValue = '2';
+            calculator.appendNumber('2');
             calculator.calculate();
             expect(calculator.currentValue).toBe('16');
         });
     });
 });
 
-// Classe Calculator para testes (normalmente estaria em arquivo separado)
+// Classe Calculator completa
 class Calculator {
     constructor() {
         this.currentValue = '0';
@@ -150,11 +150,11 @@ class Calculator {
         return a / b;
     }
 
-    power(base, exponent = 2) {
+    powerOperation(base, exponent = 2) {
         return Math.pow(base, exponent);
     }
 
-    sqrt(number) {
+    sqrtOperation(number) {
         if (number < 0) {
             throw new Error('Raiz de número negativo');
         }
@@ -220,6 +220,28 @@ class Calculator {
             this.currentValue = 'Erro';
             this.operator = null;
             this.previousValue = '';
+            this.shouldResetDisplay = true;
+        }
+    }
+
+    power() {
+        const current = parseFloat(this.currentValue);
+        try {
+            this.currentValue = this.powerOperation(current, 2).toString();
+            this.shouldResetDisplay = true;
+        } catch (error) {
+            this.currentValue = 'Erro';
+            this.shouldResetDisplay = true;
+        }
+    }
+
+    sqrt() {
+        const current = parseFloat(this.currentValue);
+        try {
+            this.currentValue = this.sqrtOperation(current).toString();
+            this.shouldResetDisplay = true;
+        } catch (error) {
+            this.currentValue = 'Erro';
             this.shouldResetDisplay = true;
         }
     }

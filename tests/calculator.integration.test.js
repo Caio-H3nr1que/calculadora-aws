@@ -1,11 +1,7 @@
-// calculator.integration.test.js - Testes de Integração
-// Para executar: npm run test:integration
-
 describe('Calculator - Testes de Integração', () => {
     let calculator;
 
     beforeEach(() => {
-        // Simula o DOM
         document.body.innerHTML = `
             <div class="calculator">
                 <div class="display">
@@ -129,18 +125,15 @@ describe('Calculator - Testes de Integração', () => {
 
     describe('Operações Encadeadas com Interface', () => {
         test('deve realizar múltiplas operações em sequência', () => {
-            // 5 + 3 = 8
             calculator.appendNumber('5');
             calculator.setOperator('+');
             calculator.appendNumber('3');
             calculator.calculate();
 
-            // 8 * 2 = 16
             calculator.setOperator('*');
             calculator.appendNumber('2');
             calculator.calculate();
 
-            // 16 - 6 = 10
             calculator.setOperator('-');
             calculator.appendNumber('6');
             calculator.calculate();
@@ -189,7 +182,7 @@ describe('Calculator - Testes de Integração', () => {
     });
 });
 
-// Classe Calculator com método updateDisplay
+// Classe Calculator completa com updateDisplay
 class Calculator {
     constructor() {
         this.currentValue = '0';
@@ -243,13 +236,12 @@ class Calculator {
     }
 
     powerOperation(base, exponent = 2) {
-        return Math.pow(base !== undefined ? base : parseFloat(this.currentValue), exponent);
+        return Math.pow(base, exponent);
     }
 
     sqrtOperation(number) {
-        const num = number !== undefined ? number : parseFloat(this.currentValue);
-        if (num < 0) throw new Error('Raiz de número negativo');
-        return Math.sqrt(num);
+        if (number < 0) throw new Error('Raiz de número negativo');
+        return Math.sqrt(number);
     }
 
     calculate() {
@@ -293,7 +285,7 @@ class Calculator {
     power() {
         const current = parseFloat(this.currentValue);
         try {
-            this.currentValue = this.power(current).toString();
+            this.currentValue = this.powerOperation(current, 2).toString();
             this.shouldResetDisplay = true;
             this.updateDisplay();
         } catch (error) {
@@ -306,7 +298,7 @@ class Calculator {
     sqrt() {
         const current = parseFloat(this.currentValue);
         try {
-            this.currentValue = this.sqrt(current).toString();
+            this.currentValue = this.sqrtOperation(current).toString();
             this.shouldResetDisplay = true;
             this.updateDisplay();
         } catch (error) {
