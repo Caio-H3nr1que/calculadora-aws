@@ -18,7 +18,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [18.x, 20.x]
     
     steps:
     - name: Checkout código
@@ -28,10 +28,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
     
     - name: Instalar dependências
-      run: npm ci
+      run: npm install
     
     - name: Executar testes unitários
       run: npm run test:unit
@@ -60,7 +59,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
-        cache: 'npm'
     
     - name: Instalar dependências
       run: npm ci
@@ -230,3 +228,12 @@ jobs:
         echo "✅ Testes Unitários: ${{ needs.unit-tests.result }}" >> $GITHUB_STEP_SUMMARY
         echo "✅ Testes de Integração: ${{ needs.integration-tests.result }}" >> $GITHUB_STEP_SUMMARY
         echo "✅ Testes E2E: ${{ needs.e2e-tests.result }}" >> $GITHUB_STEP_SUMMARY
+
+
+# package.json - Scripts necessários
+
+
+# jest.config.js - Configuração do Jest
+
+
+# playwright.config.js - Configuração do Playwright

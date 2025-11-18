@@ -2,7 +2,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
-    'tests/**/*.js',
+    '**/*.js',
     '!**/node_modules/**',
     '!**/coverage/**',
     '!jest.config.js'
@@ -16,8 +16,7 @@ module.exports = {
     }
   },
   testMatch: [
-    '**/tests/**/*.test.js',
-    '**/tests/**/*.integration.test.js'
-  ],
-  roots: ['<rootDir>/tests']
+    '**/*.test.js',
+    '**/*.integration.test.js'
+  ]
 };
