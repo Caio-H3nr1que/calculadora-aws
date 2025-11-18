@@ -45,25 +45,25 @@ describe('Calculator - Testes Unitários', () => {
 
     describe('Operações Especiais', () => {
         test('deve calcular potência corretamente', () => {
-            expect(calculator.power(2, 2)).toBe(4);
-            expect(calculator.power(5, 2)).toBe(25);
-            expect(calculator.power(10, 2)).toBe(100);
-            expect(calculator.power(-3, 2)).toBe(9);
-            expect(calculator.power(0, 2)).toBe(0);
+            expect(calculator.powerOperation(2, 2)).toBe(4);
+            expect(calculator.powerOperation(5, 2)).toBe(25);
+            expect(calculator.powerOperation(10, 2)).toBe(100);
+            expect(calculator.powerOperation(-3, 2)).toBe(9);
+            expect(calculator.powerOperation(0, 2)).toBe(0);
         });
 
         test('deve calcular raiz quadrada corretamente', () => {
-            expect(calculator.sqrt(4)).toBe(2);
-            expect(calculator.sqrt(9)).toBe(3);
-            expect(calculator.sqrt(16)).toBe(4);
-            expect(calculator.sqrt(25)).toBe(5);
-            expect(calculator.sqrt(0)).toBe(0);
-            expect(calculator.sqrt(2)).toBeCloseTo(1.414213);
+            expect(calculator.sqrtOperation(4)).toBe(2);
+            expect(calculator.sqrtOperation(9)).toBe(3);
+            expect(calculator.sqrtOperation(16)).toBe(4);
+            expect(calculator.sqrtOperation(25)).toBe(5);
+            expect(calculator.sqrtOperation(0)).toBe(0);
+            expect(calculator.sqrtOperation(2)).toBeCloseTo(1.414213);
         });
 
         test('deve lançar erro ao calcular raiz de número negativo', () => {
-            expect(() => calculator.sqrt(-1)).toThrow('Raiz de número negativo');
-            expect(() => calculator.sqrt(-9)).toThrow('Raiz de número negativo');
+            expect(() => calculator.sqrtOperation(-1)).toThrow('Raiz de número negativo');
+            expect(() => calculator.sqrtOperation(-9)).toThrow('Raiz de número negativo');
         });
     });
 

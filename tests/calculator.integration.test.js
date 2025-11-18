@@ -242,11 +242,11 @@ class Calculator {
         return a / b;
     }
 
-    power(base, exponent = 2) {
+    powerOperation(base, exponent = 2) {
         return Math.pow(base !== undefined ? base : parseFloat(this.currentValue), exponent);
     }
 
-    sqrt(number) {
+    sqrtOperation(number) {
         const num = number !== undefined ? number : parseFloat(this.currentValue);
         if (num < 0) throw new Error('Raiz de número negativo');
         return Math.sqrt(num);

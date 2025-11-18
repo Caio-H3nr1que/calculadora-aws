@@ -229,11 +229,3 @@ jobs:
         echo "✅ Testes de Integração: ${{ needs.integration-tests.result }}" >> $GITHUB_STEP_SUMMARY
         echo "✅ Testes E2E: ${{ needs.e2e-tests.result }}" >> $GITHUB_STEP_SUMMARY
 
-
-# package.json - Scripts necessários
-
-
-# jest.config.js - Configuração do Jest
-
-
-# playwright.config.js - Configuração do Playwright
