@@ -95,10 +95,11 @@ jobs:
     - name: Instalar Playwright browsers
       run: npx playwright install --with-deps
     
-    - name: Iniciar servidor de desenvolvimento
-      run: |
-        npm start &
-        npx wait-on http://localhost:3000
+    - name: Executar testes E2E (Playwright gerencia o servidor)
+      run: npm run test:e2e -- --project=chromium
+      timeout-minutes: 5
+      env:
+       CI: true
     
     - name: Executar testes E2E
       run: npm run test:e2e
