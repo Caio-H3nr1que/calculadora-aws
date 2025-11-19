@@ -16,12 +16,6 @@
     "build": "echo 'Build concluído com sucesso'",
     "deploy": "echo 'Deploy iniciado'"
   },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-dom"
-    ]
-  },
   "keywords": [
     "calculator",
     "web",
