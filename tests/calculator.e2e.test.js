@@ -1,267 +1,337 @@
-// calculator.e2e.test.js - Testes End-to-End
-// Para executar com Playwright: npx playwright test
+// calculator.integration.test.js - Testes de Integração com Jest + JSDOM
+// Para executar: npm test
 
-const { test, expect } = require('@playwright/test');
+/**
+ * ATENÇÃO: Estes testes usam JSDOM que simula um navegador.
+ * NÃO substituem testes E2E reais. Use ambos em produção.
+ */
 
-test.describe('Calculator E2E Tests', () => {
-    test.beforeEach(async ({ page }) => {
-        // Navegue para a página da calculadora
-        await page.goto('http://localhost:3000'); // Ajuste a URL conforme necessário
+// Assumindo que você tem um arquivo HTML ou precisa criar o DOM manualmente
+// Você precisará ajustar baseado na sua estrutura real
+
+describe('Calculator Integration Tests', () => {
+    let calculator;
+    let display;
+    let history;
+    let buttons;
+
+    beforeEach(() => {
+        // Setup do DOM - AJUSTE CONFORME SUA ESTRUTURA REAL
+        document.body.innerHTML = `
+            <div class="calculator">
+                <div id="history"></div>
+                <div id="display">0</div>
+                <div class="buttons">
+                    <button data-action="clear">C</button>
+                    <button data-action="square">x²</button>
+                    <button data-action="sqrt">√</button>
+                    <button data-action="divide">÷</button>
+                    
+                    <button data-number="7">7</button>
+                    <button data-number="8">8</button>
+                    <button data-number="9">9</button>
+                    <button data-action="multiply">×</button>
+                    
+                    <button data-number="4">4</button>
+                    <button data-number="5">5</button>
+                    <button data-number="6">6</button>
+                    <button data-action="subtract">−</button>
+                    
+                    <button data-number="1">1</button>
+                    <button data-number="2">2</button>
+                    <button data-number="3">3</button>
+                    <button data-action="add">+</button>
+                    
+                    <button data-number="0">0</button>
+                    <button data-action="decimal">.</button>
+                    <button data-action="equals">=</button>
+                </div>
+            </div>
+        `;
+
+        // Inicialize sua calculadora aqui
+        // SUBSTITUA ISSO PELA SUA LÓGICA REAL DE INICIALIZAÇÃO
+        // calculator = new Calculator();
+        // calculator.init();
+
+        display = document.getElementById('display');
+        history = document.getElementById('history');
+        buttons = document.querySelectorAll('button');
     });
 
-    test.describe('Operações Básicas via Interface', () => {
-        test('deve realizar soma através de cliques', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=+');
-            await page.click('text=3');
-            await page.click('text==');
+    afterEach(() => {
+        document.body.innerHTML = '';
+    });
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('8');
+    // Funções auxiliares para simular interações
+    const clickButton = (selector) => {
+        const button = document.querySelector(selector);
+        if (!button) throw new Error(`Button not found: ${selector}`);
+        button.click();
+    };
+
+    const clickNumber = (num) => clickButton(`[data-number="${num}"]`);
+    const clickAction = (action) => clickButton(`[data-action="${action}"]`);
+    
+    const typeKeys = (keys) => {
+        keys.split('').forEach(key => {
+            const event = new KeyboardEvent('keydown', { 
+                key, 
+                bubbles: true,
+                cancelable: true 
+            });
+            document.dispatchEvent(event);
+        });
+    };
+
+    describe('Operações Básicas via Interface', () => {
+        test('deve realizar soma através de cliques', () => {
+            clickNumber('5');
+            clickAction('add');
+            clickNumber('3');
+            clickAction('equals');
+
+            expect(display.textContent).toBe('8');
         });
 
-        test('deve realizar subtração através de cliques', async ({ page }) => {
-            await page.click('text=9');
-            await page.click('text=−');
-            await page.click('text=4');
-            await page.click('text==');
+        test('deve realizar subtração através de cliques', () => {
+            clickNumber('9');
+            clickAction('subtract');
+            clickNumber('4');
+            clickAction('equals');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('5');
+            expect(display.textContent).toBe('5');
         });
 
-        test('deve realizar multiplicação através de cliques', async ({ page }) => {
-            await page.click('text=6');
-            await page.click('text=×');
-            await page.click('text=7');
-            await page.click('text==');
+        test('deve realizar multiplicação através de cliques', () => {
+            clickNumber('6');
+            clickAction('multiply');
+            clickNumber('7');
+            clickAction('equals');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('42');
+            expect(display.textContent).toBe('42');
         });
 
-        test('deve realizar divisão através de cliques', async ({ page }) => {
-            await page.click('text=8');
-            await page.click('text=÷');
-            await page.click('text=2');
-            await page.click('text==');
+        test('deve realizar divisão através de cliques', () => {
+            clickNumber('8');
+            clickAction('divide');
+            clickNumber('2');
+            clickAction('equals');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('4');
+            expect(display.textContent).toBe('4');
         });
     });
 
-    test.describe('Operações Especiais via Interface', () => {
-        test('deve calcular potência através de clique', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=x²');
+    describe('Operações Especiais via Interface', () => {
+        test('deve calcular potência através de clique', () => {
+            clickNumber('5');
+            clickAction('square');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('25');
+            expect(display.textContent).toBe('25');
         });
 
-        test('deve calcular raiz quadrada através de clique', async ({ page }) => {
-            await page.click('text=9');
-            await page.click('text=√');
+        test('deve calcular raiz quadrada através de clique', () => {
+            clickNumber('9');
+            clickAction('sqrt');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('3');
+            expect(display.textContent).toBe('3');
         });
 
-        test('deve mostrar erro ao calcular raiz de número negativo', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=−');
-            await page.click('text=1');
-            await page.click('text=0');
-            await page.click('text==');
-            await page.click('text=√');
+        test('deve mostrar erro ao calcular raiz de número negativo', () => {
+            clickNumber('5');
+            clickAction('subtract');
+            clickNumber('1');
+            clickNumber('0');
+            clickAction('equals');
+            clickAction('sqrt');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('Erro');
+            expect(display.textContent).toBe('Erro');
         });
     });
 
-    test.describe('Interação com Teclado', () => {
-        test('deve aceitar entrada via teclado para soma', async ({ page }) => {
-            await page.keyboard.press('5');
-            await page.keyboard.press('+');
-            await page.keyboard.press('3');
-            await page.keyboard.press('Enter');
+    describe('Interação com Teclado', () => {
+        test('deve aceitar entrada via teclado para soma', () => {
+            typeKeys('5+3');
+            
+            const enterEvent = new KeyboardEvent('keydown', { 
+                key: 'Enter',
+                bubbles: true 
+            });
+            document.dispatchEvent(enterEvent);
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('8');
+            expect(display.textContent).toBe('8');
         });
 
-        test('deve limpar com tecla Escape', async ({ page }) => {
-            await page.keyboard.press('5');
-            await page.keyboard.press('+');
-            await page.keyboard.press('3');
-            await page.keyboard.press('Escape');
+        test('deve limpar com tecla Escape', () => {
+            typeKeys('5+3');
+            
+            const escapeEvent = new KeyboardEvent('keydown', { 
+                key: 'Escape',
+                bubbles: true 
+            });
+            document.dispatchEvent(escapeEvent);
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('0');
+            expect(display.textContent).toBe('0');
         });
 
-        test('deve calcular com tecla Enter', async ({ page }) => {
-            await page.keyboard.press('7');
-            await page.keyboard.press('*');
-            await page.keyboard.press('8');
-            await page.keyboard.press('Enter');
+        test('deve calcular com tecla Enter', () => {
+            typeKeys('7*8');
+            
+            const enterEvent = new KeyboardEvent('keydown', { 
+                key: 'Enter',
+                bubbles: true 
+            });
+            document.dispatchEvent(enterEvent);
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('56');
+            expect(display.textContent).toBe('56');
         });
     });
 
-    test.describe('Operações Complexas', () => {
-        test('deve realizar cálculo com números decimais', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=.');
-            await page.click('text=5');
-            await page.click('text=+');
-            await page.click('text=2');
-            await page.click('text=.');
-            await page.click('text=5');
-            await page.click('text==');
+    describe('Operações Complexas', () => {
+        test('deve realizar cálculo com números decimais', () => {
+            clickNumber('5');
+            clickAction('decimal');
+            clickNumber('5');
+            clickAction('add');
+            clickNumber('2');
+            clickAction('decimal');
+            clickNumber('5');
+            clickAction('equals');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('8');
+            expect(display.textContent).toBe('8');
         });
 
-        test('deve realizar operações encadeadas', async ({ page }) => {
+        test('deve realizar operações encadeadas', () => {
             // 10 + 5 = 15
-            await page.click('text=1');
-            await page.click('text=0');
-            await page.click('text=+');
-            await page.click('text=5');
-            await page.click('text==');
+            clickNumber('1');
+            clickNumber('0');
+            clickAction('add');
+            clickNumber('5');
+            clickAction('equals');
 
             // 15 * 2 = 30
-            await page.click('text=×');
-            await page.click('text=2');
-            await page.click('text==');
+            clickAction('multiply');
+            clickNumber('2');
+            clickAction('equals');
 
             // 30 - 10 = 20
-            await page.click('text=−');
-            await page.click('text=1');
-            await page.click('text=0');
-            await page.click('text==');
+            clickAction('subtract');
+            clickNumber('1');
+            clickNumber('0');
+            clickAction('equals');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('20');
+            expect(display.textContent).toBe('20');
         });
 
-        test('deve lidar com divisão por zero', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=÷');
-            await page.click('text=0');
-            await page.click('text==');
+        test('deve lidar com divisão por zero', () => {
+            clickNumber('5');
+            clickAction('divide');
+            clickNumber('0');
+            clickAction('equals');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('Erro');
+            expect(display.textContent).toBe('Erro');
         });
     });
 
-    test.describe('Comportamento da Interface', () => {
-        test('deve mostrar histórico durante operação', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=+');
+    describe('Comportamento da Interface', () => {
+        test('deve mostrar histórico durante operação', () => {
+            clickNumber('5');
+            clickAction('add');
 
-            const history = await page.locator('#history');
-            await expect(history).toHaveText('5+');
+            expect(history.textContent).toBe('5+');
         });
 
-        test('deve limpar histórico após cálculo', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=+');
-            await page.click('text=3');
-            await page.click('text==');
+        test('deve limpar histórico após cálculo', () => {
+            clickNumber('5');
+            clickAction('add');
+            clickNumber('3');
+            clickAction('equals');
 
-            const history = await page.locator('#history');
-            await expect(history).toHaveText('');
+            expect(history.textContent).toBe('');
         });
 
-        test('deve resetar display após resultado ao digitar novo número', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=+');
-            await page.click('text=3');
-            await page.click('text==');
-            await page.click('text=7');
+        test('deve resetar display após resultado ao digitar novo número', () => {
+            clickNumber('5');
+            clickAction('add');
+            clickNumber('3');
+            clickAction('equals');
+            clickNumber('7');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('7');
+            expect(display.textContent).toBe('7');
         });
 
-        test('botão clear deve funcionar corretamente', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=+');
-            await page.click('text=3');
-            await page.click('text=C');
+        test('botão clear deve funcionar corretamente', () => {
+            clickNumber('5');
+            clickAction('add');
+            clickNumber('3');
+            clickAction('clear');
 
-            const display = await page.locator('#display');
-            const history = await page.locator('#history');
-            
-            await expect(display).toHaveText('0');
-            await expect(history).toHaveText('');
+            expect(display.textContent).toBe('0');
+            expect(history.textContent).toBe('');
         });
     });
 
-    test.describe('Responsividade e Acessibilidade', () => {
-        test('deve ser visível em diferentes tamanhos de tela', async ({ page }) => {
-            // Desktop
-            await page.setViewportSize({ width: 1920, height: 1080 });
-            const calculatorDesktop = await page.locator('.calculator');
-            await expect(calculatorDesktop).toBeVisible();
-
-            // Tablet
-            await page.setViewportSize({ width: 768, height: 1024 });
-            await expect(calculatorDesktop).toBeVisible();
-
-            // Mobile
-            await page.setViewportSize({ width: 375, height: 667 });
-            await expect(calculatorDesktop).toBeVisible();
+    describe('Responsividade e Acessibilidade', () => {
+        test('calculadora deve estar presente no DOM', () => {
+            const calculatorElement = document.querySelector('.calculator');
+            expect(calculatorElement).toBeInTheDocument();
         });
 
-        test('todos os botões devem ser clicáveis', async ({ page }) => {
-            const buttons = await page.locator('button').all();
-            
-            for (const button of buttons) {
-                await expect(button).toBeVisible();
-                await expect(button).toBeEnabled();
-            }
+        test('todos os botões devem ser clicáveis', () => {
+            buttons.forEach(button => {
+                expect(button).toBeInTheDocument();
+                expect(button).not.toBeDisabled();
+            });
+        });
+
+        // AVISO: JSDOM não testa responsividade real
+        // Teste apenas de presença de elementos
+        test('elementos principais devem existir', () => {
+            expect(display).toBeInTheDocument();
+            expect(history).toBeInTheDocument();
+            expect(buttons.length).toBeGreaterThan(0);
         });
     });
 
-    test.describe('Casos Extremos', () => {
-        test('deve lidar com números grandes', async ({ page }) => {
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text=×');
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text=9');
-            await page.click('text==');
+    describe('Casos Extremos', () => {
+        test('deve lidar com números grandes', () => {
+            clickNumber('9');
+            clickNumber('9');
+            clickNumber('9');
+            clickNumber('9');
+            clickNumber('9');
+            clickAction('multiply');
+            clickNumber('9');
+            clickNumber('9');
+            clickNumber('9');
+            clickNumber('9');
+            clickNumber('9');
+            clickAction('equals');
 
-            const display = await page.locator('#display');
-            const text = await display.textContent();
+            const text = display.textContent;
             expect(text).not.toBe('Erro');
             expect(text).not.toBe('0');
+            expect(parseFloat(text)).toBeGreaterThan(0);
         });
 
-        test('deve prevenir múltiplos pontos decimais', async ({ page }) => {
-            await page.click('text=5');
-            await page.click('text=.');
-            await page.click('text=3');
-            await page.click('text=.');
-            await page.click('text=2');
+        test('deve prevenir múltiplos pontos decimais', () => {
+            clickNumber('5');
+            clickAction('decimal');
+            clickNumber('3');
+            clickAction('decimal');
+            clickNumber('2');
 
-            const display = await page.locator('#display');
-            await expect(display).toHaveText('5.32');
+            expect(display.textContent).toBe('5.32');
+        });
+
+        test('deve lidar com sequência de operadores', () => {
+            clickNumber('5');
+            clickAction('add');
+            clickAction('multiply'); // Trocar operador
+            clickNumber('3');
+            clickAction('equals');
+
+            expect(display.textContent).toBe('15');
         });
     });
 });
