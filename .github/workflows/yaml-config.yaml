@@ -110,66 +110,29 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       continue-on-error: true
 
-  # Job de Build
-  build:
-    name: Build da Aplicação
+  # Job de Deploy (GitHub Pages)
+  deploy:
+    name: Deploy para GitHub Pages
     runs-on: ubuntu-latest
     needs: [unit-tests, integration-tests]
-    
-    steps:
-    - name: Checkout código
-      uses: actions/checkout@v3
-    
-    - name: Configurar Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18.x'
-        cache: 'npm'
-    
-    - name: Instalar dependências
-      run: npm ci
-    
-    - name: Build da aplicação
-      run: npm run build
-    
-    - name: Upload artefatos de build
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifacts
-        path: dist/
-
-  # Job de Deploy (apenas em main)
-  deploy:
-    name: Deploy para Produção
-    runs-on: ubuntu-latest
-    needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
-    environment:
-      name: production
-      url: https://calculator.example.com
+    permissions:
+      contents: write
     
     steps:
     - name: Checkout código
       uses: actions/checkout@v3
     
-    - name: Download artefatos de build
-      uses: actions/download-artifact@v4
-      with:
-        name: build-artifacts
-        path: dist/
-    
-    - name: Deploy para servidor
+    - name: Deploy para GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        publish_dir: .
+        exclude_assets: '.github,node_modules,tests,coverage,.gitignore,package*.json,jest.config.js,*.md'
     
-    - name: Notificação de deploy bem-sucedido
-      if: success()
-      run: |
-        echo "Deploy realizado com sucesso!"
-        # Adicione aqui notificações via Slack, Discord, etc.
+    - name: Notificação de deploy
+      run: echo "✅ Deploy concluído com sucesso!"
 
   # Job de Relatório de Testes
   test-report:
@@ -184,6 +147,5 @@ jobs:
         echo "## 📊 Relatório de Testes" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "✅ Testes Unitários: ${{ needs.unit-tests.result }}" >> $GITHUB_STEP_SUMMARY
-        echo "✅ Testes de Integração (Jest+JSDOM): ${{ needs.integration-tests.result }}" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Testes de Integração & E2E (Jest+JSDOM): ${{ needs.integration-tests.result }}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "⚠️  **AVISO**: Testes E2E foram removidos. Validação de comportamento real de usuário não está sendo testada." >> $GITHUB_STEP_SUMMARY
