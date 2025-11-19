@@ -183,7 +183,7 @@ jobs:
         echo "**Ambiente:**" >> $GITHUB_STEP_SUMMARY
         echo "- Framework: Jest" >> $GITHUB_STEP_SUMMARY
         echo "- Node.js: 18.x, 20.x (matriz)" >> $GITHUB_STEP_SUMMARY
-        echo "- Cobertura mínima: 70%" >> $GITHUB_STEP_SUMMARY
+        echo "- Cobertura mínima: 90%" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "---" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
