@@ -1,4 +1,4 @@
-export default class Calculator {
+class Calculator {
     constructor() {
         this.currentValue = '0';
         this.previousValue = '';
@@ -136,3 +136,5 @@ export default class Calculator {
         }
     }
 }
+
+module.exports = Calculator;

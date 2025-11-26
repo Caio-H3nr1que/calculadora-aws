@@ -1,4 +1,4 @@
-const Calculator = require('../calculator.js');
+const Calculator = require('../calculator.cjs');
 
 describe('Calculator - Testes de Integração', () => {
     let calculator;
