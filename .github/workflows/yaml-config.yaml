@@ -292,7 +292,6 @@ jobs:
         echo "- Compatibilidade cross-browser" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**💡 Recomendação:**" >> $GITHUB_STEP_SUMMARY
-        echo "Para validação completa de produção, considere adicionar testes E2E reais com Playwright ou Cypress executados periodicamente." >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "---" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY

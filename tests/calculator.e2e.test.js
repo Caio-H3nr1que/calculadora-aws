@@ -1,13 +1,4 @@
-// calculator.integration.test.js - Testes de Integração com Jest + JSDOM
-// Para executar: npm test
 
-/**
- * ATENÇÃO: Estes testes usam JSDOM que simula um navegador.
- * NÃO substituem testes E2E reais. Use ambos em produção.
- */
-
-// Assumindo que você tem um arquivo HTML ou precisa criar o DOM manualmente
-// Você precisará ajustar baseado na sua estrutura real
 
 describe('Calculator Integration Tests', () => {
     let calculator;
@@ -16,7 +7,6 @@ describe('Calculator Integration Tests', () => {
     let buttons;
 
     beforeEach(() => {
-        // Setup do DOM - AJUSTE CONFORME SUA ESTRUTURA REAL
         document.body.innerHTML = `
             <div class="calculator">
                 <div id="history"></div>
@@ -30,12 +20,12 @@ describe('Calculator Integration Tests', () => {
                     <button data-number="7">7</button>
                     <button data-number="8">8</button>
                     <button data-number="9">9</button>
-                    <button data-action="multiply">×</button>
+                    <button data-action="multiply">x</button>
                     
                     <button data-number="4">4</button>
                     <button data-number="5">5</button>
                     <button data-number="6">6</button>
-                    <button data-action="subtract">−</button>
+                    <button data-action="subtract">-</button>
                     
                     <button data-number="1">1</button>
                     <button data-number="2">2</button>
@@ -48,12 +38,6 @@ describe('Calculator Integration Tests', () => {
                 </div>
             </div>
         `;
-
-        // Inicialize sua calculadora aqui
-        // SUBSTITUA ISSO PELA SUA LÓGICA REAL DE INICIALIZAÇÃO
-        // calculator = new Calculator();
-        // calculator.init();
-
         display = document.getElementById('display');
         history = document.getElementById('history');
         buttons = document.querySelectorAll('button');
@@ -63,7 +47,6 @@ describe('Calculator Integration Tests', () => {
         document.body.innerHTML = '';
     });
 
-    // Funções auxiliares para simular interações
     const clickButton = (selector) => {
         const button = document.querySelector(selector);
         if (!button) throw new Error(`Button not found: ${selector}`);
@@ -284,8 +267,6 @@ describe('Calculator Integration Tests', () => {
             });
         });
 
-        // AVISO: JSDOM não testa responsividade real
-        // Teste apenas de presença de elementos
         test('elementos principais devem existir', () => {
             expect(display).toBeInTheDocument();
             expect(history).toBeInTheDocument();

@@ -182,7 +182,6 @@ describe('Calculator - Testes de Integração', () => {
     });
 });
 
-// Classe Calculator completa com updateDisplay
 class Calculator {
     constructor() {
         this.currentValue = '0';

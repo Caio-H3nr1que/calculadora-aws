@@ -1,6 +1,3 @@
-// calculator.test.js - Testes Unitários
-// Salve este arquivo em: tests/calculator.test.js
-
 describe('Calculator - Testes Unitários', () => {
     let calculator;
 
@@ -121,8 +118,6 @@ describe('Calculator - Testes Unitários', () => {
         });
     });
 });
-
-// Classe Calculator completa
 class Calculator {
     constructor() {
         this.currentValue = '0';

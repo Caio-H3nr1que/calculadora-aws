@@ -8,7 +8,6 @@
     "test": "jest",
     "test:unit": "jest --testMatch='**/tests/**/*.test.js' --testPathIgnorePatterns='.*\\.e2e\\.test\\.js$' --testPathIgnorePatterns='.*\\.integration\\.test\\.js$'",
     "test:integration": "jest --testMatch='**/tests/**/*.integration.test.js'",
-    "test:e2e": "playwright test",
     "test:coverage": "jest --coverage --testPathIgnorePatterns='.*\\.e2e\\.test\\.js$'",
     "test:watch": "jest --watch",
     "test:all": "npm run test:unit && npm run test:integration && npm run test:e2e",
@@ -21,14 +20,12 @@
     "web",
     "javascript",
     "jest",
-    "playwright",
     "testing",
     "ci-cd"
   ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/jest": "^29.5.0",
     "eslint": "^8.50.0",
