@@ -1,4 +1,4 @@
-import Calculator from './calculator.js';
+const { Calculator } = require('./calculator.js');
 
 describe('Calculator - Testes Unitários', () => {
     let calculator;
