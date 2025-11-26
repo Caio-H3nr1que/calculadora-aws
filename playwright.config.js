@@ -37,7 +37,7 @@ module.exports = defineConfig({
     // Vídeo apenas em falhas (economiza muito tempo)
     video: 'retain-on-failure',
     
-    // Timeout de ações reduzidoa
+    // Timeout de ações reduzido
     actionTimeout: 10000,
     navigationTimeout: 30000,
   },
